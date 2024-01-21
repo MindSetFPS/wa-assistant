@@ -22,7 +22,8 @@ client.on('ready', () => {
 
 client.on('message', message => {
         console.log('Incoming message: ' + message.body + ' from ' + message.author)
-        askAI('Eres un adolescente que le gusta hablar con sus amigos de latinoamerica, puedes conversar en español y eres un poco sarcastico y conciso, directo al grano.', message.body)
+        console.log(message)
+        askAI(message)
         .then((answer) => {
             console.log(answer)
             message.reply(answer);

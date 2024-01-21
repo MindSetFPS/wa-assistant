@@ -1,10 +1,10 @@
-async function askAI(context, prompt){
+async function askAI(message){
     var answer = fetch('http://localhost:7861/prompt', {
         method: 'POST',
         body: JSON.stringify({
             max_tokens: 128,
-            context: context,
-            prompt: prompt
+            prompt: message.body,
+            from: message.from
         }),
         headers: {
             'Content-type': 'application/json; charset=UTF-8',
