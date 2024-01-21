@@ -4,6 +4,8 @@ import json
 import time
 from propmt_templates.prompt import generate_prompts
 
+from conversations import conversations, createConversation, findConversation, getLastMessage
+
 def calculate_time():
     start = time.time()
     end = time.time()
@@ -20,29 +22,32 @@ app = Flask(__name__)
 model = models.transformers("TheBloke/OpenHermes-2.5-Mistral-7B-16k-AWQ", device="cuda")
 
 # lista de mensajes del usuario
-conversation = []
+# conversation = []
 
 @app.route("/prompt", methods=['POST'])
 def new_prompt():
     data = request.get_json()
     print(data)
+    
     max_tokens = int(data['max_tokens'])
     prompt = data["prompt"]
-    # context = data["context"]
+    message_from = data["from"]
     generator = generate.text(model, max_tokens=max_tokens)
 
-    
-    conversation.append(prompt)
-    print(conversation)
-    print(generate_prompts(conversation))
+    conversation = findConversation(message_from, prompt)
     result = generator(generate_prompts(conversation))
-    conversation.append(result)
-    # print(result)
+
+    # append bot response to conversation
+    findConversation(message_from, result)
+
     return json.dumps({ 
         "ok":"true",
         "time" : calculate_time(),
         "answer" : result
     })
+
+
+# Todo: make a function to clear context
 
 # flask --app llm_server run --host=0.0.0.0 --port=7860
 

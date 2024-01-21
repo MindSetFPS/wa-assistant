@@ -3,11 +3,14 @@
 
 
 
-
-
+# Helped me understand Prompt Templating:
+# https://huggingface.co/blog/llama2
+# https://huggingface.co/docs/transformers/main/chat_templating
+# https://github.com/liltom-eth/llama2-webui
+# https://github.com/thisserand/llama2_local/blob/main/llama_chat_format.py
 
 def generate_prompts(prompt: list):
-    system_message = "Eres un Agente de Servicio a cliente de una tienda departamental. Siempre buscas dar ayuda en modelos, tallas y precios."
+    system_message = "Estas por responder una conversacion con una persona. Vas a responder preguntas de forma precisa, dar recomendacion y ayudar con el proceso de toma de decisiones. Seguiras las peticiones al pie de la letra. Piensa de forma creativa."
     PROMPT_TEMPLATE = f"""
     <|im_start|>system
     {system_message}<|im_end|>
