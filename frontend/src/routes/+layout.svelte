@@ -1,6 +1,6 @@
 <script>
+  import "../app.pcss";
   import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
-    import "../app.pcss";
   import { page } from '$app/stores';
   import { DarkMode } from 'flowbite-svelte';
 
@@ -23,6 +23,14 @@
     </NavUl>
   </Navbar>
 
-<div class="container mx-auto md:px-36">
+<div class="container mx-auto px-2 md:px-36">
+
+  <div class="visible sm:invisible" >base</div>
+  <div class="invisible sm:visible md:invisible" ></div>
+  <div class="invisible md:visible lg:invisible" ></div>
+  <div class="invisible lg:visible xl:invisible" ></div>
+  <div class="invisible xl:visible 2xl:invisible" ></div>
+  <div class="invisible 2xl:visible" ></div>
+
     <slot></slot>
 </div>
