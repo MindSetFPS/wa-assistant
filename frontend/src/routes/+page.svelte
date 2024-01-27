@@ -7,15 +7,19 @@
 <div class="divide-y divide-neutral-50 ">
 
     <div>
-      <Heading tag="h1" class="mb-4 text-6xl font-extrabold  md:text-7xl lg:text-8xl">
-        <Span gradient>Vende en Whatsapp</Span> <br /> sin estar ahí.
+      <Heading tag="h1" class="mb-4 text-3xl font-extrabold  md:text-7xl lg:text-8xl">
+        <Span gradient class="text-4xl md:text-7xl">Tu Whatsapp vende </Span> <br class="hidden md:block" /> sin estar ahí.
       </Heading>
-      <P class="p-2 md: text-3xl">Whatbot atiende a tus clientes y te ayuda a vender más. Whatbot entiende tu negocio, productos y precios para que tu te enfoques en mejorar tus productos.</P>
-      <div class="flex justify-evenly md:justify-center p-4">
+      <P class=" text-lg md:text-4xl ">Whatbot entiende tu negocio, productos y precios para atender a tus clientes y ayudandote a vender más.</P>
+      <div class="flex justify-evenly md:justify-center my-2 w-full">
         
-        <GradientButton size="xl" class="transition-all mx-4" color="greenToBlue">Pruebalo ya <GoogleSolid class="w-3.5 h-3.5 ms-2 align-middle" /> </GradientButton>
-        
-        <Button size="xl" color="light" class="transition-all mx-4">Empieza ahora <ArrowRightSolid class="w-3.5 h-3.5 ms-2" /> </Button>
+        <GradientButton class="w-full mr-1 py-4" color="green">
+          Pruebalo ya <GoogleSolid size="xs" class="ml-2"/> 
+        </GradientButton>
+      
+        <Button color="light" class="w-full ml-1">
+          Comenzar <ArrowRightSolid class="ml-2" size="xs"/> 
+        </Button>
       
       </div>
     </div>
