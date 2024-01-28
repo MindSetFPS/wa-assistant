@@ -7,9 +7,10 @@
     $: activeUrl = $page.url.pathname;
 </script>
 
-<Navbar>
+<div class="w-screen flex flex-col h-full" >
+  <Navbar class="h-[80px]">
     <NavBrand href="/">
-      <img src="/images/flowbite-svelte-icon-logo.svg" class="me-3 h-6 sm:h-9" alt="Flowbite Logo" />
+      <img src="" class="me-3 h-6 sm:h-9" alt="Flowbite Logo" />
       <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span>
     </NavBrand>
     <NavHamburger />
@@ -22,15 +23,25 @@
       <NavLi> <DarkMode /> </NavLi>
     </NavUl>
   </Navbar>
-
-<div class="container mx-auto px-2 md:px-36">
-
-  <div class="visible sm:invisible" >base</div>
-  <div class="invisible sm:visible md:invisible" ></div>
-  <div class="invisible md:visible lg:invisible" ></div>
-  <div class="invisible lg:visible xl:invisible" ></div>
-  <div class="invisible xl:visible 2xl:invisible" ></div>
-  <div class="invisible 2xl:visible" ></div>
-
+  
+  <div class="container mx-auto px-2 md:px-36 relative h-full" id="cont" >
+    <!-- <div class="block sm:hidden" >base</div>
+    <div class="hidden sm:block md:hidden" ></div>
+    <div class="hidden lg:block xl:hidden" ></div>
+    <div class="hidden md:block lg:hidden" ></div>
+    <div class="hidden xl:block 2xl:hidden" ></div>
+    <div class="hidden 2xl:block" ></div> -->
     <slot></slot>
+  </div>
 </div>
+
+<style>
+
+
+  #cont {
+    height: calc(100vh - 80px);
+  }
+
+
+
+</style>
