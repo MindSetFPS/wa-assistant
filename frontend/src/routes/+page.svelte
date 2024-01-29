@@ -2,9 +2,32 @@
   import { Heading, P, Span } from 'flowbite-svelte';
   import { DeviceMockup, GradientButton, Button } from 'flowbite-svelte';
   import { ArrowRightSolid, GoogleSolid } from 'flowbite-svelte-icons';
+  import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
+  import { DarkMode } from 'flowbite-svelte';
+  import { page } from '$app/stores';
+
+
+  $: activeUrl = $page.url.pathname;
+
 </script>
 
 <div class="divide-y divide-neutral-50 ">
+
+  <Navbar class="h-[80px]">
+    <NavBrand href="/">
+      <img src="" class="me-3 h-6 sm:h-9" alt="Flowbite Logo" />
+      <span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span>
+    </NavBrand>
+    <NavHamburger />
+    <NavUl {activeUrl}>
+      <NavLi href="/">Home</NavLi>
+      <NavLi href="/setup">Setup</NavLi>
+      <NavLi href="/chat">chat</NavLi>
+      <NavLi href="/docs/components/alert">Alert</NavLi>
+      <NavLi href="/docs/components/avatar">Avatar</NavLi>
+      <NavLi> <DarkMode /> </NavLi>
+    </NavUl>
+  </Navbar>
 
     <div>
       <Heading tag="h1" class="mb-4 text-3xl font-extrabold  md:text-7xl lg:text-8xl">
@@ -49,6 +72,6 @@
     <Heading tag="h2" customSize="text-2xl font-bold">
       Whatsapp en esteroides.
     </Heading>
-    <P>Mejoras a la experiencia de usuario en Whatsapp. ¿Necesitas tomar el control de una conversacion? Hazlo en un click.</P>
+    <P>Mejoramos substancialmente tu experiencia en Whatsapp. ¿Necesitas tomar el control de una conversacion? Hazlo en un click.</P>
   </div>
 </div>
