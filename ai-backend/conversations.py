@@ -19,7 +19,15 @@ def findConversation(message_from, prompt) -> list:
 
     pprint.pprint(conversations, width=120)
     return getConversationHistory(index)
-    
+
+def restartConversationContext(message_from: str):
+    index = getConversationIndex(message_from=message_from)
+    conversations.pop(index)
+
+def getConversationIndex(message_from: str):
+    return next(
+        (index for (index, conversation) in enumerate(conversations) if conversation["from"] == message_from), None
+    )
 
 def getLastMessage(index):
     return conversations[index]["last_prompt"]

@@ -1,10 +1,11 @@
 from outlines import models, generate
 from flask import Flask, request
+from flask_cors import CORS
 import json
 import time
-from propmt_templates.prompt import generate_prompts
+from propmt_templates.prompt import generate_prompts, generate_prompts_pygmalion
 
-from conversations import conversations, createConversation, findConversation, getLastMessage
+from conversations import conversations, createConversation, findConversation, getLastMessage, restartConversationContext
 
 def calculate_time():
     start = time.time()
@@ -12,14 +13,16 @@ def calculate_time():
     return end - start
 
 app = Flask(__name__)
+CORS(app)
 
 # models = [
 #     "TheBloke/Mistral-7B-OpenOrca-AWQ",
 #       "TheBloke/openchat-3.5-0106-AWQ",
         # "openhermes-2.5-mistral-7b-16k" very recomended by internet people
+        # "TheBloke/Pygmalion-2-7B-AWQ" Roleplay AI      
 # ]
 
-model = models.transformers("TheBloke/OpenHermes-2.5-Mistral-7B-16k-AWQ", device="cuda")
+model = models.transformers("TheBloke/Mistral-7B-OpenOrca-AWQ", device="cuda")
 
 # lista de mensajes del usuario
 # conversation = []
@@ -44,6 +47,18 @@ def new_prompt():
         "ok":"true",
         "time" : calculate_time(),
         "answer" : result
+    })
+
+@app.route("/delete-conversation", methods=['POST'])
+def delete_conversation():
+    data = request.get_json()
+
+    message_from = data["from"]
+    restartConversationContext(message_from=message_from)
+
+    return json.dumps({
+        "ok": "true",
+        "time": calculate_time(),
     })
 
 
