@@ -1,5 +1,5 @@
 <script>
-  import { Sidebar, SidebarBrand, SidebarCta, SidebarDropdownItem, SidebarDropdownWrapper, SidebarGroup, SidebarItem, SidebarWrapper } from 'flowbite-svelte';
+  import { DarkMode, Sidebar, SidebarBrand, SidebarCta, SidebarDropdownItem, SidebarDropdownWrapper, SidebarGroup, SidebarItem, SidebarWrapper } from 'flowbite-svelte';
   import { ChartPieSolid, ShoppingCartSolid, GridSolid, MailBoxSolid, UsersSolid, BagSolid, ArrowRightToBracketSolid, FileEditSolid, UserSolid } from 'flowbite-svelte-icons';
   import { sineIn } from 'svelte/easing';
   let activateClickOutside = false;
@@ -48,9 +48,10 @@
           </svelte:fragment>
         </SidebarItem>
 
-        <SidebarItem label="Chat" href="/docs/components/sidebar" active={activeUrl === '/docs/components/sidebar'}>
+        <SidebarItem label="Modo oscuro" active={true}>
           <svelte:fragment slot="icon">
-            <UserSolid class="ml-6 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+            <!-- <UserSolid class="ml-6 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" /> -->
+            <DarkMode btnClass="ml-6" />
           </svelte:fragment>
         </SidebarItem>
 
