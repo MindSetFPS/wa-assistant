@@ -16,10 +16,11 @@
 	let prompt = '';
 	let chatHistory = [];
 	function askApi() {
+        console.log(prompt)
 		fetch('http://192.168.1.140:7861/prompt', {
 			method: 'POST',
 			body: JSON.stringify({
-				max_tokens: 128,
+				max_tokens: 64,
 				prompt: prompt,
 				from: '999999999'
 			}),
@@ -73,10 +74,11 @@
 				<form class="w-full">
 					<label for="chat" class="sr-only">Your message</label>
 					<Dropdown {placement} triggeredBy="#dropdown">
-						<DropdownItem>Dashboard</DropdownItem>
+						<DropdownItem on:click={ () => chatHistory = []} >
+                            Reiniciar conversacion
+                        </DropdownItem>
 						<DropdownItem>Settings</DropdownItem>
-						<DropdownItem>Earnings</DropdownItem>
-						<DropdownItem slot="footer">Sign out</DropdownItem>
+						<!-- <DropdownItem slot="footer">Sign out</DropdownItem> -->
 					</Dropdown>
 					<Alert color="dark" class="px-1 py-2">
 						<svelte:fragment slot="icon">
