@@ -1,4 +1,4 @@
-
+from conversations import bot
 
 
 
@@ -10,7 +10,7 @@
 # https://github.com/thisserand/llama2_local/blob/main/llama_chat_format.py
 
 def generate_prompts(prompt: list):
-    system_message = "Estas por responder una conversacion con una persona. Vas a responder preguntas de forma precisa, dar recomendacion y ayudar con el proceso de toma de decisiones. Seguiras las peticiones al pie de la letra. Piensa de forma creativa."
+    system_message = bot["base_prompt"]
     PROMPT_TEMPLATE = f"""
     <|im_start|>system
     {system_message}<|im_end|>
@@ -32,6 +32,36 @@ def generate_prompts(prompt: list):
        else:
             response = f"""
             <|im_start|>assistant
+            {message}<|im_end|>
+            """
+        
+       FINAL_PROMPT = FINAL_PROMPT + response
+
+    return FINAL_PROMPT + ASSISTANT_TEMPLATE
+
+def generate_prompts_pygmalion(prompt: list):
+    system_message = "<|system|>Enter RP mode. Pretend to be Maria whose persona follows: Daniel \nYou shall reply to the user while staying in character, and generate long responses. Maria is a young 20 year old who has recently come to the city and wants to have fun and maybe get a boyfriend. The place is a bar, with vodka and tekila."
+    PROMPT_TEMPLATE = f"""
+    <|system|>system
+    {system_message}<|im_end|>
+    """
+    ASSISTANT_TEMPLATE = f"""
+    <|model|>assistant
+    """
+    FINAL_PROMPT = PROMPT_TEMPLATE
+    
+    # PROMPT_TEMPLATE + USER_TEMPLATE + ASSISTANT_TEMPLATE
+
+    for i, message in enumerate(prompt):
+    #    print(f"{i+1}:{message}")
+       if (i+1)%2 == 1:
+        response = f"""
+            <|user|>user
+            {message}<|im_end|>
+            """
+       else:
+            response = f"""
+            <|model|>assistant
             {message}<|im_end|>
             """
         

@@ -3,9 +3,9 @@ from flask import Flask, request
 from flask_cors import CORS
 import json
 import time
-from propmt_templates.prompt import generate_prompts, generate_prompts_pygmalion
+from prompt_templates.prompt import generate_prompts, generate_prompts_pygmalion
 
-from conversations import conversations, createConversation, findConversation, getLastMessage, restartConversationContext
+from conversations import addMessageToConversation, restartConversationContext, bot
 
 def calculate_time():
     start = time.time()
@@ -24,9 +24,6 @@ CORS(app)
 
 model = models.transformers("TheBloke/Mistral-7B-OpenOrca-AWQ", device="cuda")
 
-# lista de mensajes del usuario
-# conversation = []
-
 @app.route("/prompt", methods=['POST'])
 def new_prompt():
     data = request.get_json()
@@ -37,11 +34,11 @@ def new_prompt():
     message_from = data["from"]
     generator = generate.text(model, max_tokens=max_tokens)
 
-    conversation = findConversation(message_from, prompt)
+    conversation = addMessageToConversation(message_from, prompt)
     result = generator(generate_prompts(conversation))
 
     # append bot response to conversation
-    findConversation(message_from, result)
+    addMessageToConversation(message_from, result)
 
     return json.dumps({ 
         "ok":"true",
@@ -61,8 +58,23 @@ def delete_conversation():
         "time": calculate_time(),
     })
 
+@app.route("/edit-context", methods=['POST'])
+def edit_context():
+    data = request.json()
 
-# Todo: make a function to clear context
+    newContext = data["newContext"]
+    print(newContext)
+    return json.dumps({
+        "ok": "true",
+        "time": calculate_time()
+    })
+
+@app.route("/get-context", methods=['GET'])
+def get_context():
+    return json.dumps({
+        "ok": "true",
+        "context": bot["base_prompt"]
+    })
 
 # flask --app llm_server run --host=0.0.0.0 --port=7860
 
