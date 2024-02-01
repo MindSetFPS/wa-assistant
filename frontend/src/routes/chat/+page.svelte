@@ -3,7 +3,7 @@
 	import SideBar from '../../components/sideBar.svelte';
 	import ChatTextInput from '../../components/chatTextInput.svelte';
 	import ChatTopBar from '../../components/chatTopBar.svelte';
-	import Message from '../../components/message.svelte';
+	import API_URL from '$lib/constants';
 
 	type owner = "Bot" | "System" | string;
 	interface Message {
@@ -11,10 +11,11 @@
 		text: string
 	}
 	
-    const API_URL: string = 'http://192.168.1.140:7861/';
 	let chatHistory: Message[] = [];
 	let hidden = false;
 	let user: owner = "9999071819"
+	let context: string;
+	let newContext: string;
 	
 	function handleNewMessage(a){
 		console.log(a)
@@ -28,7 +29,6 @@
 	function addMessage(message: Message) {
 		askApi(message);
 		chatHistory = [message, ...chatHistory];
-		console.log(chatHistory);
 	}
 
 	function addSystemMessage(message: Message){
@@ -55,7 +55,15 @@
 		addSystemMessage(sysMessage)
 	}
 
-	function askApi(message: Message) {
+
+
+	function getContext() {
+		fetch(API_URL + "get-context")
+		.then((response) => response.json())
+		.then((data) => context = data.context)
+	}
+
+	function askApi(message: Message){
 		console.log(message);
 		fetch(API_URL + 'prompt', {
 			method: 'POST',
@@ -81,6 +89,9 @@
             //handle error
         });
 	}
+
+	getContext();
+
 </script>
 
 <div class="flex h-full">
