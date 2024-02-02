@@ -1,6 +1,6 @@
-<script>
-  import { DarkMode, Sidebar, SidebarBrand, SidebarCta, SidebarDropdownItem, SidebarDropdownWrapper, SidebarGroup, SidebarItem, SidebarWrapper } from 'flowbite-svelte';
-  import { ChartPieSolid, ShoppingCartSolid, GridSolid, MailBoxSolid, UsersSolid, BagSolid, ArrowRightToBracketSolid, FileEditSolid, UserSolid } from 'flowbite-svelte-icons';
+<script lang="ts">
+  import { DarkMode, Sidebar, SidebarDropdownWrapper, SidebarGroup, SidebarItem, SidebarWrapper } from 'flowbite-svelte';
+  import { ChartPieSolid,  GridSolid, MailBoxSolid, UserSolid } from 'flowbite-svelte-icons';
   import { sineIn } from 'svelte/easing';
   let activateClickOutside = false;
   let backdrop = false;
@@ -13,7 +13,7 @@
   };
   $: activeUrl = $page.url.pathname;
   export let chats = ["juan", "pepe", "tono"]
-  export let hidden;
+  // export let hidden;
   import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
