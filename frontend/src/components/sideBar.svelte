@@ -1,7 +1,7 @@
 <script lang="ts">
   import { DarkMode, Sidebar, SidebarDropdownWrapper, SidebarGroup, SidebarItem, SidebarWrapper } from 'flowbite-svelte';
   import { 
-    // ChartPieSolid,  
+    ChartPieSolid,  
     GridSolid, MailBoxSolid, UserSolid } from 'flowbite-svelte-icons';
   import { sineIn } from 'svelte/easing';
   let activateClickOutside = false;
@@ -26,11 +26,11 @@
     <SidebarWrapper class="w-full h-full" >
       <SidebarDropdownWrapper label="Navegacion">
         
-        <!-- <SidebarItem label="Dashboard">
+        <SidebarItem label="Dashboard">
           <svelte:fragment slot="icon">
             <ChartPieSolid class="ml-6 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
           </svelte:fragment>
-        </SidebarItem> -->
+        </SidebarItem>
         
         <SidebarItem label="Kanban" {spanClass}>
           <svelte:fragment slot="icon">
