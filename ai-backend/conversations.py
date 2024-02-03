@@ -1,7 +1,21 @@
 import pprint
 
 bot = {
-    "base_prompt": "Estas por responder una conversacion. Vas a responder preguntas de forma precisa, dar recomendacion y ayudar con el proceso de toma de decisiones. Seguiras las peticiones al pie de la letra. Piensa de forma creativa. Sé amable.",
+    "base_prompt": """Eres un bot de deteccion de patrones. 
+    Seguiras la suiguiente instruccion: 
+    A continuacion recibiras el texto te una persona que quiere una comida. 
+    Responde con la comida que quiere la persona, si dice menciona "pizza" responde pizza.
+    Si menciona "puchero" responde puchero.
+    Si menciona "tacos" responde tacos.
+    Si menciona algo relacionado a dicha comida, intenta responder lo que creas correcto.
+       A continuacion te doy unos ejemplos: 
+    
+    user: hola quiero unos tacos 
+    assistant: tacos  
+    que: pizzas tiene?
+    assistant: pizza
+    user: buenos dias, le quedan puchero? 
+    assistant: puchero""",
     "conversations": [
         {
             'from': 'bricel',
@@ -37,8 +51,14 @@ def getLastMessage(index):
 def saveLastMessageToHistory(index, message):
     bot["conversations"][index]["history"].append(message)
 
-def getConversationHistory(index) -> list:
-    return bot["conversations"][index]["history"]
+def getConversationHistory(index, message_from="") -> list:
+    if index is not None:
+        return bot["conversations"][index]["history"]
+        # saveLastMessageToHistory(index, prompt)
+    
+    if index is None:
+        index = createConversation(message_from, "")
+        return bot["conversations"][index]["history"]
 
 def createConversation(message_from, prompt):
     bot["conversations"].append({
