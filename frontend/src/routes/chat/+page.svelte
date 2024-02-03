@@ -4,7 +4,9 @@
 	import ChatTextInput from '../../components/chatTextInput.svelte';
 	import ChatTopBar from '../../components/chatTopBar.svelte';
 	import API_URL from '$lib/constants';
-
+	import { context } from '$lib/store';
+	import { onMount } from 'svelte';
+	
 	type owner = "Bot" | "System" | string;
 	interface Message {
 		owner: owner,
@@ -14,8 +16,6 @@
 	let chatHistory: Message[] = [];
 	let hidden = false;
 	let user: owner = "9999071819"
-	let context: string;
-	let newContext: string;
 	
 	function handleNewMessage(a){
 		console.log(a)
@@ -30,11 +30,11 @@
 		askApi(message);
 		chatHistory = [message, ...chatHistory];
 	}
-
+	
 	function addSystemMessage(message: Message){
 		chatHistory = [message, ...chatHistory]
 	}
-
+	
 	function handleRestartChatContext(){
 		fetch(API_URL + 'delete-conversation', {
 			method: 'POST',
@@ -46,23 +46,33 @@
 				'Access-Control-Allow-Origin': '*'
 			}
 		})
-
+		
 		let sysMessage: Message = {
 			owner: "System",
 			text: "El bot ha olvidado los mensajes anteriores." 
 		}
-
 		addSystemMessage(sysMessage)
 	}
-
-
-
+	
 	function getContext() {
-		fetch(API_URL + "get-context")
+		fetch(API_URL + "get-context", {
+			method: 'POST',
+			body: JSON.stringify({
+				from: user
+			}),
+			headers: {
+				'Content-type': 'application/json; charset=UTF-8',
+				'Access-Control-Allow-Origin': '*'
+			}
+		})
 		.then((response) => response.json())
-		.then((data) => context = data.context)
+		.then((data) => {
+			console.log(data.context)
+			context.update( () => data.context)
+		})
+		console.log($context)
 	}
-
+	
 	function askApi(message: Message){
 		console.log(message);
 		fetch(API_URL + 'prompt', {
@@ -83,14 +93,17 @@
 				owner: "Bot",
 				text: data.answer
 			}
+			console.log(data.conversation)
 			chatHistory = [newMessage, ...chatHistory]
 		})
         .catch((error) => {
-            //handle error
+			//handle error
         });
 	}
-
-	getContext();
+	
+		onMount(() => {
+			getContext();
+		})
 
 </script>
 
