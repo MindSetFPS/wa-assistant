@@ -1,16 +1,14 @@
-from conversations import bot
-
-
-
-
+from conversations import bot, Conversation, Message
+from typing import List
+from pprint import pprint
 # Helped me understand Prompt Templating:
 # https://huggingface.co/blog/llama2
 # https://huggingface.co/docs/transformers/main/chat_templating
 # https://github.com/liltom-eth/llama2-webui
 # https://github.com/thisserand/llama2_local/blob/main/llama_chat_format.py
 
-def generate_prompts(prompt: list):
-    system_message = bot["base_prompt"]
+def generate_prompts(message_history: List[Message]):
+    system_message = bot.prompt
     PROMPT_TEMPLATE = f"""
     <|im_start|>system
     {system_message}<|im_end|>
@@ -22,20 +20,20 @@ def generate_prompts(prompt: list):
     
     # PROMPT_TEMPLATE + USER_TEMPLATE + ASSISTANT_TEMPLATE
 
-    for i, message in enumerate(prompt):
-    #    print(f"{i+1}:{message}")
-       if (i+1)%2 == 1:
+    for i, message in enumerate(message_history):
+       if message.owner != "System" and message.owner != "Bot":
         response = f"""
             <|im_start|>user
-            {message}<|im_end|>
+            {message.message}<|im_end|>
             """
-       else:
+       if message.owner == "Bot":
             response = f"""
             <|im_start|>assistant
-            {message}<|im_end|>
+            {message.message}<|im_end|>
             """
         
        FINAL_PROMPT = FINAL_PROMPT + response
+       print(FINAL_PROMPT + ASSISTANT_TEMPLATE)
 
     return FINAL_PROMPT + ASSISTANT_TEMPLATE
 
