@@ -1,13 +1,12 @@
 <script lang="ts">
-    import {
-        ArrowLeftOutline,
-    } from 'flowbite-svelte-icons';
+    import {ArrowLeftOutline} from 'flowbite-svelte-icons';
     import { Avatar } from 'flowbite-svelte';
     import { createEventDispatcher } from 'svelte';
+	import type { Tables } from '$lib/supabase';
+	
     const dispatch = createEventDispatcher();
-
-    export let hidden: Boolean;
-
+    export let conversation: Tables<"conversations">;
+    console.log(conversation)
 </script>
 
 <div class="flex items-center bg-blue-400 py-4 pl-2 align-middle">
@@ -18,5 +17,11 @@
         on:click={() => dispatch('backButtonClicked')}
     />
     <Avatar />
-    <p class="ml-2 text-2xl text-white">Ernesto Sebastian</p>
+    <p class="ml-2 text-2xl text-white">
+    {#await conversation}
+        loading
+    {:then} 
+        {conversation.customer_id}
+    {/await}
+    </p>
 </div>
