@@ -1,8 +1,15 @@
 <script lang="ts">
-	import {DarkMode,Sidebar,SidebarDropdownWrapper,SidebarGroup,SidebarItem,SidebarWrapper} from 'flowbite-svelte';
+	import {
+		DarkMode,
+		Sidebar,
+		SidebarDropdownWrapper,
+		SidebarGroup,
+		SidebarItem,
+		SidebarWrapper
+	} from 'flowbite-svelte';
 	import { ChartSolid, GridSolid, MailBoxSolid, UserSolid } from 'flowbite-svelte-icons';
 	import { createEventDispatcher } from 'svelte';
-	import { sineIn } from 'svelte/easing';
+	// import { sineIn } from 'svelte/easing';
 	import supabase from '$lib/supabaseClient';
 	import type { Tables } from '$lib/supabase';
 	import { page } from '$app/stores';
@@ -10,29 +17,32 @@
 	$: activeUrl = $page.url.pathname;
 
 	let spanClass = 'flex-1 ms-3 whitespace-nowrap';
-	let activateClickOutside = false;
-	let backdrop = false;
-	let transitionParams = {
-		x: -320,
-		duration: 200,
-		easing: sineIn
-	};
+	// let activateClickOutside = false;
+	// let backdrop = false;
+	// let transitionParams = {
+	// 	x: -320,
+	// 	duration: 200,
+	// 	easing: sineIn
+	// };
 
-	export let chats: Tables<'conversations'>[];
-	chats = [];
+	export let conversations: any[] = [];
+	$: otherconversations = conversations != undefined ? conversations : undefined
+	console.log(otherconversations);
+	// chats = json
+	// conversations = [];
 
-	async function getConversations() {
-		let { data: messages, error } = await supabase.from('conversations').select('customer_id');
-		if (messages) {
-			chats = messages;
-		}
+	// async function getConversations() {
+	// 	let { data: messages, error } = await supabase.from('conversations').select('customer_id');
+	// 	if (messages) {
+	// 		chats = messages;
+	// 	}
 
-		if (error) {
-			console.log(error);
-		}
-	}
+	// 	if (error) {
+	// 		console.log(error);
+	// 	}
+	// }
 
-	getConversations();
+	// getConversations();
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -95,18 +105,26 @@
 						/>
 					</svelte:fragment>
 				</SidebarItem>
-					{#each chats as chat}
-					<SidebarItem
-					label={chat.customer_id}
-					on:click={() => dispatch('chatClicked', { chatId: chat.customer_id })}
-					>
-					<svelte:fragment slot="icon">
-						<UserSolid
-						class="ml-6 h-5 w-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
-						/>
-					</svelte:fragment>
-				</SidebarItem>
-				{/each}
+				{#await conversations}
+					aaaa.......
+				{:then}
+					{#if conversations != undefined}
+						{#each conversations as chat, index}
+							<SidebarItem
+								label={chat.customer_id}
+								on:click={() => {
+									dispatch('chatClicked', { chatIndex: index });
+								}}
+							>
+								<svelte:fragment slot="icon">
+									<UserSolid
+										class="ml-6 h-5 w-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+									/>
+								</svelte:fragment>
+							</SidebarItem>
+						{/each}
+					{/if}
+				{/await}
 			</SidebarGroup>
 		</SidebarWrapper>
 	</Sidebar>

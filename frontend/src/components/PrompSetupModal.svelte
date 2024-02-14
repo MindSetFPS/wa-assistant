@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { PlusSolid, QuoteSolid } from 'flowbite-svelte-icons';
 	import { Button, Modal, Label, Input, Checkbox } from 'flowbite-svelte';
-	import API_URL from '$lib/constants';
+	import { API_URL } from '$lib/constants';
 	import { context } from '$lib/store';
 
 	export let modalIsOpen: boolean = false;

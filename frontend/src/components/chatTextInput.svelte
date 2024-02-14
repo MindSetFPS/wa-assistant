@@ -16,7 +16,7 @@
 
 <form class="w-full">
 	<label for="chat" class="sr-only">Your message</label>
-	<Dropdown {placement} triggeredBy="#dropdown">
+	<Dropdown placement={"top"} triggeredBy="#dropdown">
 		<DropdownItem on:click={() => dispatch('deleteChat')}>Reiniciar conversacion</DropdownItem>
 		<DropdownItem on:click={() => (modalIsOpen = !modalIsOpen)}>Prompts</DropdownItem>
 	</Dropdown>

@@ -5,8 +5,7 @@
 	import type { Tables } from '$lib/supabase';
 	
     const dispatch = createEventDispatcher();
-    export let conversation: Tables<"conversations">;
-    console.log(conversation)
+    export let conversation: string = "";
 </script>
 
 <div class="flex items-center bg-blue-400 py-4 pl-2 align-middle">
@@ -21,7 +20,7 @@
     {#await conversation}
         loading
     {:then} 
-        {conversation.customer_id}
+        {conversation}
     {/await}
     </p>
 </div>

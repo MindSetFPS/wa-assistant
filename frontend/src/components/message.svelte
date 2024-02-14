@@ -1,12 +1,10 @@
 <script lang="ts">
-    export let message: string;
-    export let className: string;
-    export let name: string;
+	export let message: string;
+	export let className: string;
+	export let name: string;
 </script>
 
-<div
-	class="my-3 rounded-xl {className}"
->
+<div class="my-3 rounded-xl {className}">
 	<!-- <img class="w-8 h-8 rounded-full" src="" alt="Jese"> -->
 	<div
 		class="leading-1 flex w-full max-w-[320px] flex-col rounded-e-xl rounded-es-xl border-gray-200 p-4"
@@ -18,7 +16,7 @@
 				{:else}
 					Bot
 				{/if} -->
-                {name}
+				{name}
 			</span>
 			<span class="text-sm font-normal text-gray-500 dark:text-gray-400"
 				>{new Date().toLocaleTimeString()}</span
