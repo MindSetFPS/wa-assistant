@@ -1,5 +1,5 @@
 # Run backend
 
 ```bash
-node --env-file=.env wasap.js
+ENVIRONMENT=DEVELOPMENT npx tsc && ENVIRONMENT=PRODUCTION node index.js
 ```
