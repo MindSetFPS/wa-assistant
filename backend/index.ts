@@ -12,34 +12,27 @@ import dotenv from 'dotenv'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 dotenv.config()
 
-console.log(process.env.ENVIRONMENT!)
-console.log(__dirname)
 console.log(path.join(__dirname, '..', "models", "llama-2-7b-chat.Q4_K_M.gguf"))
 
-
-const supabase = createClient(process.env.PROJECT_URL!, process.env.SERVICE_KEY!)
+const supabase = createClient(process.env.PUBLIC_SUPABASE_URL!, process.env.PUBLIC_SUPABASE_API_KEY!)
 
 const model = new LlamaModel({
     modelPath: path.join(__dirname, '..', "models", "llama-2-7b-chat.Q4_K_M.gguf")
 })
-const context = new LlamaContext({model})
+const context = new LlamaContext({ model })
 const session = new LlamaChatSession({
     context,
     promptWrapper: new MyCustomChatPromptWrapper(),
-    systemPrompt: 'Eres una verga'
+    systemPrompt: 'Eres un agente de servicio a cliente.'
 })
-
-// console.log(model)
-// console.log(context)
-
 
 async function getConversation(message_from: string) {
     const { data, error } = await supabase
-    .from('conversations')
-    .select('messages')
-    .eq('customer_id', message_from)
-    .single()
-    
+        .from('conversations')
+        .select('messages')
+        .eq('customer_id', message_from)
+        .single()
+
     if (data) {
         return data.messages
     }
@@ -47,56 +40,45 @@ async function getConversation(message_from: string) {
         console.log(error)
     }
 }
-// ollama.list()
-// .then((a) =>
-//     console.log(a)
-// )
 
 const client = new Client({
     authStrategy: new LocalAuth(),
     // Only required if its running inside a container
     // puppeteer: {
-        //    args: ['--no-sandbox', '--disable-setuid-sandbox'],   
-        // } 
-    });
-    
-    // client.on('qr', qr => {
-    //     qrcode.generate(qr, { small: true });
-    // });
-    
-    client.on('ready', () => {
-        console.log('Client is ready!');
-    });
-    
-    
-    client.on('message', async message => {
-        console.log('Incoming message: ' + message.body + ' from ' + message.from)
-        
-        let conversation = await getConversation(message.from)
-        
-        if(conversation === undefined){
-            conversation = []
-        }
-        
-        conversation.push({
-            role: 'user',
-            content: message.body
-        })
-        
-        // let r = await ollama.chat({
-            //     model: "mistral-openorca:7b-q4_K_M",
-            //     messages: conversation,
-            //     stream: false
-            // })
-            
-            const r = await session.prompt(message.body)
-            
-            let outgoingMessage = r;
-            console.log("Outgoing message: " + outgoingMessage)
-            conversation.push(r)
-            message.reply(r);
-            
-            console.log(session)
+    //    args: ['--no-sandbox', '--disable-setuid-sandbox'],   
+    // } 
+});
+
+// client.on('qr', qr => {
+//     qrcode.generate(qr, { small: true });
+// });
+
+client.on('ready', () => {
+    console.log('Client is ready!');
+});
+
+client.on('message', async message => {
+    console.log('Incoming message: ' + message.body + ' from ' + message.from)
+
+    let conversation = await getConversation(message.from)
+
+    if (conversation === undefined) {
+        conversation = []
+    }
+
+    conversation.push({
+        role: 'user',
+        content: message.body
+    })
+
+    const r = await session.prompt(message.body)
+
+    let outgoingMessage = r;
+    console.log("Outgoing message: " + outgoingMessage)
+    conversation.push(r)
+    message.reply(r);
+
+    console.log(session)
     const { data, error } = await supabase
         .from('conversations')
         .upsert([
@@ -119,5 +101,4 @@ const client = new Client({
 client.initialize();
 
 // export default client
-
 // Generate QR image https://www.npmjs.com/package/qr-image
