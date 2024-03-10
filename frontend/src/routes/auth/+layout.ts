@@ -5,7 +5,7 @@
 // Session viene de +layout.server.ts
 // Sigue sin hacer nada
 
-import { SUPABASE_ANON_API_KEY, SUPABASE_PROJECT_URL } from '$lib/constants'
+import { PUBLIC_SUPABASE_API_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
 import { createSupabaseLoadClient } from '@supabase/auth-helpers-sveltekit'
 
 console.log("hit routes/auth/+layout.ts")
@@ -15,8 +15,8 @@ export const load = async ({ fetch, data, depends }) => {
   depends('supabase:auth')
 
   const supabase = createSupabaseLoadClient({
-    supabaseUrl: SUPABASE_PROJECT_URL,
-    supabaseKey: SUPABASE_ANON_API_KEY,
+    supabaseUrl: PUBLIC_SUPABASE_URL,
+    supabaseKey: PUBLIC_SUPABASE_API_KEY,
     event: { fetch },
     serverSession: data.session,
   })
