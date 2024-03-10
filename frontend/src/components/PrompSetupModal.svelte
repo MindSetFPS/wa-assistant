@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { PlusSolid, QuoteSolid } from 'flowbite-svelte-icons';
 	import { Button, Modal, Label, Input, Checkbox } from 'flowbite-svelte';
-	import { API_URL } from '$lib/constants';
+	import { PUBLIC_SUPABASE_URL } from '$env/static/public';
 	import { context } from '$lib/store';
 
 	export let modalIsOpen: boolean = false;
@@ -14,7 +14,7 @@
 	};
 
 	function updateContext() {
-		fetch(API_URL + 'update-context', {
+		fetch(PUBLIC_SUPABASE_URL + 'update-context', {
 			method: 'POST',
 			body: JSON.stringify({
 				newContext: builtPrompt
