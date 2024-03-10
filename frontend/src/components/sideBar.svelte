@@ -5,14 +5,22 @@
 		SidebarDropdownWrapper,
 		SidebarGroup,
 		SidebarItem,
-		SidebarWrapper
+		SidebarWrapper,
+		Modal,
+		Button
 	} from 'flowbite-svelte';
-	import { ChartSolid, GridSolid, MailBoxSolid, UserSolid } from 'flowbite-svelte-icons';
+	import { ChartSolid, GridSolid, MailBoxSolid, UserSolid, ArrowLeftToBracketOutline, ArrowLeftToBracketSolid, ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { createEventDispatcher } from 'svelte';
 	// import { sineIn } from 'svelte/easing';
 	import supabase from '$lib/supabaseClient';
 	import type { Tables } from '$lib/supabase';
 	import { page } from '$app/stores';
+	import type { SubmitFunction } from '@sveltejs/kit';
+
+	// Removing "enhance" made the request work despite the supabase tutorial uses it
+	// import { enhance } from '$app/forms';
+	let loading = false
+
 
 	$: activeUrl = $page.url.pathname;
 
@@ -44,8 +52,32 @@
 
 	// getConversations();
 
+	const handleSignOut: SubmitFunction = () => {
+		loading = true
+		return async ({ update }) => {
+			loading = false
+			update()
+		}
+	}
 	const dispatch = createEventDispatcher();
+	let popupModal = false;
 </script>
+
+<Modal bind:open={popupModal} size="xs" autoclose>
+	<div class="text-center">
+	  <ExclamationCircleOutline class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" />
+	  <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Cerrar sesión?</h3>
+	  
+	  <form method="post" action="/account?/signout" use:enhance={handleSignOut}>
+		<div>
+			<button class="button block" disabled={loading}>Sign Out</button>
+		</div>
+	</form>
+
+
+	  <Button color="alternative">No, cancel</Button>
+	</div>
+  </Modal>
 
 <div class="h-full w-full list-none md:w-auto">
 	<Sidebar class="h-full w-full" {activeUrl}>
@@ -89,12 +121,28 @@
 					</svelte:fragment>
 				</SidebarItem>
 
-				<SidebarItem label="Modo oscuro" active={true}>
+				<SidebarItem label="Log Out" {spanClass} on:click={() => (popupModal = true)} >
 					<svelte:fragment slot="icon">
-						<!-- <UserSolid class="ml-6 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" /> -->
-						<DarkMode btnClass="ml-6" />
+						<ArrowLeftToBracketOutline
+							class="ml-6 h-5 w-5  text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+						/>
+
+					</svelte:fragment>
+					<svelte:fragment slot="subtext">
+						<span
+							class="text-primary-600 bg-primary-200 dark:bg-primary-900 dark:text-primary-200 ml-6 ms-3 inline-flex h-3 w-3 items-center justify-center rounded-full p-3 text-sm font-medium"
+						>
+							3
+						</span>
 					</svelte:fragment>
 				</SidebarItem>
+
+				<!-- <SidebarItem label="Modo oscuro" active={true}> -->
+					<!-- <svelte:fragment slot="icon"> -->
+						<!-- <UserSolid class="ml-6 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" /> -->
+						<!-- <DarkMode btnClass="ml-6" /> -->
+					<!-- </svelte:fragment> -->
+				<!-- </SidebarItem> -->
 			</SidebarDropdownWrapper>
 
 			<SidebarGroup>
